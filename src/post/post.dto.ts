@@ -8,8 +8,3 @@ export class CreatePost {
   @IsNotEmpty()
   userId: String;
 }
-
-export interface Comment {
-  user: String;
-  comment: String;
-}

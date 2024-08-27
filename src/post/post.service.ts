@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Post } from './post.interface';
 
 @Injectable()
@@ -9,10 +9,12 @@ export class PostService {
   }
 
   getPostById(postId: Number): Post | undefined {
-    return this._Posts.find((p) => p._id === postId);
+    const postResult = this._Posts.find((p) => p._id === postId);
+    if (!postResult) throw new NotFoundException('Post Not Found');
+    return postResult;
   }
 
-  createPost(body: Omit<Post, '_id' | 'likes' | 'comments'>): Post {
+  createPost(body: Omit<Post, '_id'>): Post {
     const _body = { ...body, _id: new Date().getTime(), likes: [], comments: [] };
     this._Posts.push(_body);
     return _body;
